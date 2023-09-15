@@ -5,14 +5,14 @@ The provided sample projects offer a concise yet effective demonstration of the 
 IPWorks EDI 2022 libraries for the corresponding edition are required to run these samples.  Free download from: [https://www.nsoftware.com/ipworksedi](https://www.nsoftware.com/ipworksedi)
 
 ## Reference Documentation
-[Java](https://cdn.nsoftware.com/help/BEH/java/)
-[Javascript](https://cdn.nsoftware.com/help/BEH/js/)
-[.NET](https://cdn.nsoftware.com/help/BEH/cs/)
-[Python](https://cdn.nsoftware.com/help/BEH/py/)
-[PHP](https://cdn.nsoftware.com/help/BEH/php/)
-[C++](https://cdn.nsoftware.com/help/BEH/cpp/)
-[macOS](https://cdn.nsoftware.com/help/BEH/mac/)
-[iOS](https://cdn.nsoftware.com/help/BEH/mac/)
+* [Java Edition](https://cdn.nsoftware.com/help/BEH/java/)
+* [Javascript Edition](https://cdn.nsoftware.com/help/BEH/js/)
+* [.NET Edition](https://cdn.nsoftware.com/help/BEH/cs/)
+* [Python Edition](https://cdn.nsoftware.com/help/BEH/py/)
+* [PHP Edition](https://cdn.nsoftware.com/help/BEH/php/)
+* [C++ Edition](https://cdn.nsoftware.com/help/BEH/cpp/)
+* [macOS Edition](https://cdn.nsoftware.com/help/BEH/mac/)
+* [iOS Edition](https://cdn.nsoftware.com/help/BEH/mac/)
 
 ## Sample Projects
 | Sample Project | Description |
