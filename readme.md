@@ -6,11 +6,12 @@ IPWorks EDI 2022 libraries for the corresponding edition are required to run the
 
 ## Reference Documentation
 * [Java Edition](https://cdn.nsoftware.com/help/BEH/java/)
-* [Javascript Edition](https://cdn.nsoftware.com/help/BEH/js/)
 * [.NET Edition](https://cdn.nsoftware.com/help/BEH/cs/)
+* [JavaScript Edition](https://cdn.nsoftware.com/help/BEH/js/)
 * [Python Edition](https://cdn.nsoftware.com/help/BEH/py/)
 * [PHP Edition](https://cdn.nsoftware.com/help/BEH/php/)
 * [C++ Edition](https://cdn.nsoftware.com/help/BEH/cpp/)
+* [Delphi Edition](https://cdn.nsoftware.com/help/BEH/dlp/)
 * [macOS Edition](https://cdn.nsoftware.com/help/BEH/mac/)
 * [iOS Edition](https://cdn.nsoftware.com/help/BEH/mac/)
 

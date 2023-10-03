@@ -8,7 +8,7 @@
   "main": "as2client.js",
   "dependencies": {
     "full-icu": "*",
-    "ipworksedi": "^22.0.8658"
+    "ipworksedi": "^22.0.8676"
   },
   "scripts": {
     "as2client": "node as2client.js"
