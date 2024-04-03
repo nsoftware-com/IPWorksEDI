@@ -147,14 +147,14 @@ questions, please visit <a href="http://www.nsoftware.com/?demopg-BEPHA" target=
 contact our technical <a href="http://www.nsoftware.com/support/">support</a>.
 <br/>
 <br/>
-Copyright (c) 2023 /n software inc.
+Copyright (c) 2024 /n software inc.
 <br/>
 <br/>
 </div>
 
 <div id="footer">
 <center>
-IPWorks EDI 2022 - Copyright (c) 2023 /n software inc. - For more information, please visit our website at <a href="http://www.nsoftware.com/?demopg-BEPHA" target="_blank">www.nsoftware.com</a>.
+IPWorks EDI 2022 - Copyright (c) 2024 /n software inc. - For more information, please visit our website at <a href="http://www.nsoftware.com/?demopg-BEPHA" target="_blank">www.nsoftware.com</a>.
 </center>
 </div>
 
