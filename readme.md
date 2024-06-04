@@ -22,7 +22,6 @@ IPWorks EDI 2022 libraries for the corresponding edition are required to run the
 | [AS2 Client](./IPWorks%20EDI%20Samples/AS2%20Client) | A simple but full-featured AS2 client. |
 | [AS2 Server](./IPWorks%20EDI%20Samples/AS2%20Server) | A simple example of an AS2 server. |
 | [AS4 Client](./IPWorks%20EDI%20Samples/AS4%20Client) | This demo shows how to use the AS4Client component to send files to AS4Server. |
-| [AS4 Server](./IPWorks%20EDI%20Samples/AS4%20Server) | This demo shows how to receive files and send a receipt using AS4Server. |
 | [Certificate Manager](./IPWorks%20EDI%20Samples/Certificate%20Manager) | Full-featured certificate management sample.  Demonstrates how to list, manage, create, and sign certificates. |
 | [EDIFACT Parser](./IPWorks%20EDI%20Samples/EDIFACT%20Parser) | Shows how to parse EDIFACT documents via the ParseFile or Input methods. |
 | [EDIFACT Translator](./IPWorks%20EDI%20Samples/EDIFACT%20Translator) | Demonstrates how to translate EDIFACT data to XML and vice versa. |
