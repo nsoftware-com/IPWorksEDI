@@ -1,5 +1,5 @@
 (*
- * IPWorks EDI 2022 Delphi Edition - Sample Project
+ * IPWorks EDI 2024 Delphi Edition - Sample Project
  *
  * This sample project demonstrates the usage of IPWorks EDI in a 
  * simple, straightforward way. It is not intended to be a complete 
@@ -60,7 +60,7 @@ type
       var ErrorCode: Integer; var ErrorDescription: string);
     procedure OFTPServer1AcceptFile(Sender: TObject; ConnectionId: Integer;
       const VirtualFileName, VirtualFileDate, Destination, Originator: string;
-      var Accept: Boolean; var Filename: string; var Overwrite: Boolean;
+      var Accept: Boolean; var FileName: string; var Overwrite: Boolean;
       var ErrorCode: Integer; var ErrorDescription: string);
     procedure OFTPServer1Disconnected(Sender: TObject; ConnectionId,
       StatusCode: Integer; const Description: string);
@@ -169,7 +169,7 @@ begin
       OFTPServer1.ServerSSIDCode := tServerId.Text;
       OFTPServer1.ServerSFIDCode := OFTPServer1.ServerSSIDCode; // This is usually the same value as the SSID
       OFTPServer1.ServerPassword := tServerPassword.Text;
-      OFTPServer1.Listening := true;
+      OFTPServer1.StartListening();
       tLog.Lines.Add('Server Has Started.');
       bStart.Caption := 'Stop';
     end else begin
@@ -223,7 +223,7 @@ end;
 
 procedure TFormOFTPServer.OFTPServer1AcceptFile(Sender: TObject;
   ConnectionId: Integer; const VirtualFileName, VirtualFileDate, Destination,
-  Originator: string; var Accept: Boolean; var Filename: string;
+  Originator: string; var Accept: Boolean; var FileName: string;
   var Overwrite: Boolean; var ErrorCode: Integer; var ErrorDescription: string);
 begin
   // This event fires whenever the client sends a file to the server.

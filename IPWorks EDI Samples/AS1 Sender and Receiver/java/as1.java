@@ -1,5 +1,5 @@
 /*
- * IPWorks EDI 2022 Java Edition - Sample Project
+ * IPWorks EDI 2024 Java Edition - Sample Project
  *
  * This sample project demonstrates the usage of IPWorks EDI in a 
  * simple, straightforward way. It is not intended to be a complete 
@@ -41,7 +41,7 @@ public class as1 extends ConsoleDemo {
 
 		
 		String response;
-		As1sender as1sender = new As1sender();
+		AS1Sender as1sender = new AS1Sender();
 
 		// First, configure your mail server
 		as1sender.setMailServer(prompt("Specify the SMTP server",":","localhost"));
@@ -78,7 +78,7 @@ public class as1 extends ConsoleDemo {
 		}
 
 		if (compress)
-			as1sender.setCompressionFormat(As1sender.cfZLIB);
+			as1sender.setCompressionFormat(AS1Sender.cfZLIB);
 
 		if (requestMDN) {
 			as1sender.setMDNTo(myAddress);
@@ -97,7 +97,7 @@ public class as1 extends ConsoleDemo {
 
 	public void receiveMessage() throws IPWorksEDIException, java.io.IOException {
 		String response;
-		As1receiver as1receiver = new As1receiver();
+		AS1Receiver as1receiver = new AS1Receiver();
 
 		as1receiver.setLogDirectory(logDir);
 
@@ -152,7 +152,7 @@ public class as1 extends ConsoleDemo {
 		String response;
 		// Use the sender component to process receipts. (This is parallel to the AS2 case, where the
 		// receipts are returned synchronously, with no extra processing required.
-		As1sender as1sender = new As1sender();
+		AS1Sender as1sender = new AS1Sender();
 
 		as1sender.setLogDirectory(logDir);
 
@@ -249,15 +249,13 @@ class ConsoleDemo {
     System.out.print(label + punctuation + " ");
     return input();
   }
-
-  static String prompt(String label, String punctuation, String defaultVal)
-  {
-	System.out.print(label + " [" + defaultVal + "] " + punctuation + " ");
-	String response = input();
-	if(response.equals(""))
-		return defaultVal;
-	else
-		return response;
+  static String prompt(String label, String punctuation, String defaultVal) {
+      System.out.print(label + " [" + defaultVal + "] " + punctuation + " ");
+      String response = input();
+      if (response.equals(""))
+        return defaultVal;
+      else
+        return response;
   }
 
   static char ask(String label) {

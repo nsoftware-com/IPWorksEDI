@@ -1,5 +1,5 @@
 /*
- * IPWorks EDI 2022 Java Edition - Sample Project
+ * IPWorks EDI 2024 Java Edition - Sample Project
  *
  * This sample project demonstrates the usage of IPWorks EDI in a 
  * simple, straightforward way. It is not intended to be a complete 
@@ -19,7 +19,7 @@ import ipworksedi.*;
 
 public class ftp
 {
-    Ftp ftp1;
+    FTP ftp1;
     public int verbose;
     long transtime;
     long transbytes;
@@ -29,8 +29,8 @@ public class ftp
     public ftp(String[] args){
         try
         {
-            ftp1 = new Ftp();
-            ftp1.addFtpEventListener(new FTPEvents(this));
+            ftp1 = new FTP();
+            ftp1.addFTPEventListener(new FTPEvents(this));
         }catch (Exception ex)
         {
             System.out.println(ex.getMessage());
@@ -91,11 +91,11 @@ public class ftp
                 }
                 else if ( argument[0].equals("ascii") )
                 {
-                    ftp1.setTransferMode(1);
+                    ftp1.changeTransferMode(1);
                 }
                 else if ( argument[0].equals("binary") )
                 {
-                    ftp1.setTransferMode(2);
+                    ftp1.changeTransferMode(2);
                 }
                 else if ( argument[0].equals("bye") || argument[0].equals("quit"))
                 {
@@ -110,7 +110,7 @@ public class ftp
                 else if ( argument[0].equals("cd") )
                 {
                     if( argument.length > 0)
-                        ftp1.setRemotePath(argument[1]);
+                        ftp1.changeRemotePath(argument[1]);
                 }
                 else if ( argument[0].equals("get") )
                 {
@@ -130,10 +130,10 @@ public class ftp
                 {
                     if ( argument.length > 1 )
                     {
-                        pathname = ftp1.getRemotePath();
-                        ftp1.setRemotePath(argument[1]);
+                        pathname = ftp1.queryRemotePath();
+                        ftp1.changeRemotePath(argument[1]);
                         ftp1.listDirectoryLong();
-                        ftp1.setRemotePath(pathname);
+                        ftp1.changeRemotePath(pathname);
                     }
                     else
                         ftp1.listDirectoryLong();
@@ -191,7 +191,7 @@ public class ftp
                 }
                 else if ( argument[0].equals("pwd") )
                 {
-                    System.out.println( ftp1.getRemotePath() );
+                    System.out.println( ftp1.queryRemotePath() );
                 }
                 else if ( argument[0].equals("rm") )
                 {
@@ -289,17 +289,17 @@ public class ftp
     {
         new ftp(args);
     }
-    public void dirList(FtpDirListEvent arg) {
+    public void dirList(FTPDirListEvent arg) {
         System.out.println(arg.dirEntry);
     }
-    public void PITrail(FtpPITrailEvent arg) {
+    public void PITrail(FTPPITrailEvent arg) {
         if (verbose == 1)
             System.out.println(arg.message);
     }
     public void startTransfer() {
         transtime = System.currentTimeMillis();
     }
-    public void transfer(FtpTransferEvent arg) {
+    public void transfer(FTPTransferEvent arg) {
         transbytes = arg.bytesTransferred;
     }
     public void endTransfer() {
@@ -307,41 +307,41 @@ public class ftp
         endtime = System.currentTimeMillis();
         transtime = endtime - transtime;
     }
-    public void error(FtpErrorEvent arg) {
+    public void error(FTPErrorEvent arg) {
         System.out.println("\nError "+arg.errorCode+": "+arg.description);
     }
-    public void SSLServerAuthentication(FtpSSLServerAuthenticationEvent arg){
+    public void SSLServerAuthentication(FTPSSLServerAuthenticationEvent arg){
         arg.accept = true;
     }
 }
-class FTPEvents implements FtpEventListener{
+class FTPEvents implements FTPEventListener{
 		ftp instance;
     public FTPEvents(ftp instance){
         this.instance = instance;
     }
-    public void connectionStatus(FtpConnectionStatusEvent arg) {
+    public void connectionStatus(FTPConnectionStatusEvent arg) {
     }
-    public void dirList(FtpDirListEvent arg) {
+    public void dirList(FTPDirListEvent arg) {
         instance.dirList(arg);
     }
-    public void endTransfer(FtpEndTransferEvent arg) {
+    public void endTransfer(FTPEndTransferEvent arg) {
         instance.endTransfer();
     }
-    public void error(FtpErrorEvent arg) {
+    public void error(FTPErrorEvent arg) {
         instance.error(arg);
     }
-    public void PITrail(FtpPITrailEvent arg) {
+    public void PITrail(FTPPITrailEvent arg) {
     }
-    public void startTransfer(FtpStartTransferEvent arg0) {
+    public void startTransfer(FTPStartTransferEvent arg0) {
         instance.startTransfer();
     }
-    public void transfer(FtpTransferEvent arg) {
+    public void transfer(FTPTransferEvent arg) {
         instance.transfer(arg);
     }
-    public void SSLServerAuthentication(FtpSSLServerAuthenticationEvent arg){
+    public void SSLServerAuthentication(FTPSSLServerAuthenticationEvent arg){
         instance.SSLServerAuthentication(arg);
     }
-    public void SSLStatus(FtpSSLStatusEvent arg){}
+    public void SSLStatus(FTPSSLStatusEvent arg){}
 }
 class ConsoleDemo {
   private static BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
@@ -364,15 +364,13 @@ class ConsoleDemo {
     System.out.print(label + punctuation + " ");
     return input();
   }
-
-  static String prompt(String label, String punctuation, String defaultVal)
-  {
-	System.out.print(label + " [" + defaultVal + "] " + punctuation + " ");
-	String response = input();
-	if(response.equals(""))
-		return defaultVal;
-	else
-		return response;
+  static String prompt(String label, String punctuation, String defaultVal) {
+      System.out.print(label + " [" + defaultVal + "] " + punctuation + " ");
+      String response = input();
+      if (response.equals(""))
+        return defaultVal;
+      else
+        return response;
   }
 
   static char ask(String label) {

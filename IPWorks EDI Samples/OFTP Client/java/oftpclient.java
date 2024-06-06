@@ -1,5 +1,5 @@
 /*
- * IPWorks EDI 2022 Java Edition - Sample Project
+ * IPWorks EDI 2024 Java Edition - Sample Project
  *
  * This sample project demonstrates the usage of IPWorks EDI in a 
  * simple, straightforward way. It is not intended to be a complete 
@@ -18,10 +18,10 @@ import ipworksedi.*;
 public class oftpclient {
 	
 	public oftpclient(){
-		Oftpclient oftp = new Oftpclient();
+		OFTPClient oftp = new OFTPClient();
 		String buffer = "";
 		try{
-			oftp.addOftpclientEventListener(new OftpEvents(this));
+			oftp.addOFTPClientEventListener(new OftpEvents(this));
 			oftp.setOverwrite(true);
 			
 			System.out.println("Server: ");
@@ -99,54 +99,54 @@ public class oftpclient {
         return bf.readLine();
     }
     
-    public void endTransfer(OftpclientEndTransferEvent arg){
+    public void endTransfer(OFTPClientEndTransferEvent arg){
     	System.out.println("");
     }
-    public void error(OftpclientErrorEvent arg){
+    public void error(OFTPClientErrorEvent arg){
     	System.out.print("ERROR! " + arg.description);
     }
-    public void startTransfer(OftpclientStartTransferEvent arg){
+    public void startTransfer(OFTPClientStartTransferEvent arg){
     	System.out.print((arg.direction == 0 ? "Sending " : "Receiving ") + arg.virtualFileName);
     }
-    public void transfer(OftpclientTransferEvent arg){
+    public void transfer(OFTPClientTransferEvent arg){
     	System.out.print(". ");
     }
 }
 
-class OftpEvents implements OftpclientEventListener{
+class OftpEvents implements OFTPClientEventListener{
 		oftpclient instance;
 	public OftpEvents(oftpclient instance)
 	{
 		this.instance = instance;
 	}
-	public void acceptFile(OftpclientAcceptFileEvent arg) {}
-	public void endTransfer(OftpclientEndTransferEvent arg){
+	public void acceptFile(OFTPClientAcceptFileEvent arg) {}
+	public void endTransfer(OFTPClientEndTransferEvent arg){
 		instance.endTransfer(arg);
 	}
 	
-	public void error(OftpclientErrorEvent arg){
+	public void error(OFTPClientErrorEvent arg){
 		instance.error(arg);
 	}
 	
-	public void startTransfer(OftpclientStartTransferEvent arg){
+	public void startTransfer(OFTPClientStartTransferEvent arg){
 		instance.startTransfer(arg);
 	}
-	public void transfer(OftpclientTransferEvent arg){
+	public void transfer(OFTPClientTransferEvent arg){
 		instance.transfer(arg);
 	}
-	public void SSLStatus(OftpclientSSLStatusEvent arg){
+	public void SSLStatus(OFTPClientSSLStatusEvent arg){
 	}	
-	public void SSLServerAuthentication(OftpclientSSLServerAuthenticationEvent arg){
+	public void SSLServerAuthentication(OFTPClientSSLServerAuthenticationEvent arg){
 	}	
-	public void endResponse(OftpclientEndResponseEvent arg){
+	public void endResponse(OFTPClientEndResponseEvent arg){
 	}
-	public void certificateReceived(OftpclientCertificateReceivedEvent arg){
+	public void certificateReceived(OFTPClientCertificateReceivedEvent arg){
 	}
-	public void PITrail(OftpclientPITrailEvent arg)
+	public void PITrail(OFTPClientPITrailEvent arg)
 	{
 		//This event provides detailed logging of the interaction between the client and server
 	}
-    public void log(OftpclientLogEvent arg){}
+    public void log(OFTPClientLogEvent arg){}
 }
 
 class ConsoleDemo {
@@ -170,15 +170,13 @@ class ConsoleDemo {
     System.out.print(label + punctuation + " ");
     return input();
   }
-
-  static String prompt(String label, String punctuation, String defaultVal)
-  {
-	System.out.print(label + " [" + defaultVal + "] " + punctuation + " ");
-	String response = input();
-	if(response.equals(""))
-		return defaultVal;
-	else
-		return response;
+  static String prompt(String label, String punctuation, String defaultVal) {
+      System.out.print(label + " [" + defaultVal + "] " + punctuation + " ");
+      String response = input();
+      if (response.equals(""))
+        return defaultVal;
+      else
+        return response;
   }
 
   static char ask(String label) {

@@ -1,5 +1,5 @@
 /*
- * IPWorks EDI 2022 JavaScript Edition - Sample Project
+ * IPWorks EDI 2024 JavaScript Edition - Sample Project
  *
  * This sample project demonstrates the usage of IPWorks EDI in a 
  * simple, straightforward way. It is not intended to be a complete 
@@ -113,7 +113,7 @@ async function main() {
   }
 
   // Specify the data to send. For simplicity's sake, this demo just takes data from the '-data' command line argument.
-  // If you wanted to send a file instead, you could set the EDIFilename property.
+  // If you wanted to send a file instead, you could set the EDIFileName property.
   let ediData = new ipworksedi.EDIData();
   ediData.Data = getarg("data", "This is a test.") + "";
   as2.setEDIData(ediData);

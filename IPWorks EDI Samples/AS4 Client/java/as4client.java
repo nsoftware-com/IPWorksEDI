@@ -1,5 +1,5 @@
 /*
- * IPWorks EDI 2022 Java Edition - Sample Project
+ * IPWorks EDI 2024 Java Edition - Sample Project
  *
  * This sample project demonstrates the usage of IPWorks EDI in a 
  * simple, straightforward way. It is not intended to be a complete 
@@ -19,7 +19,7 @@ public class as4client {
 
 	public static void main(String[] args) {
 		try {
-			As4client as4client = new As4client();
+			AS4Client as4client = new AS4Client();
 
 			// Specify the agreement and party information
 			as4client.setAgreementRef("http://agreements.company.com/sign_and_encrypt");
@@ -66,7 +66,7 @@ public class as4client {
 			//as4client.setProfile(as4client.ebpfENTSOG);
 
 			// Configure the component to expect a synchronous receipt
-			as4client.setReceiptReplyMode(As4client.rrmSync);
+			as4client.setReceiptReplyMode(AS4Client.rrmSync);
 
 			// If the call to sendFiles() returns without throwing an exception,
 			// then the class was able to post
@@ -116,15 +116,13 @@ class ConsoleDemo {
     System.out.print(label + punctuation + " ");
     return input();
   }
-
-  static String prompt(String label, String punctuation, String defaultVal)
-  {
-	System.out.print(label + " [" + defaultVal + "] " + punctuation + " ");
-	String response = input();
-	if(response.equals(""))
-		return defaultVal;
-	else
-		return response;
+  static String prompt(String label, String punctuation, String defaultVal) {
+      System.out.print(label + " [" + defaultVal + "] " + punctuation + " ");
+      String response = input();
+      if (response.equals(""))
+        return defaultVal;
+      else
+        return response;
   }
 
   static char ask(String label) {

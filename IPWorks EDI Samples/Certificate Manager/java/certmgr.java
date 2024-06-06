@@ -1,5 +1,5 @@
 /*
- * IPWorks EDI 2022 Java Edition - Sample Project
+ * IPWorks EDI 2024 Java Edition - Sample Project
  *
  * This sample project demonstrates the usage of IPWorks EDI in a 
  * simple, straightforward way. It is not intended to be a complete 
@@ -20,7 +20,7 @@ import java.io.InputStreamReader;
 import ipworksedi.*;
 
 public class certmgr {
-    Certmgr certmgr1;
+    CertMgr certmgr1;
     int i = 0;
     public certmgr(){
         try
@@ -28,8 +28,8 @@ public class certmgr {
             final String defaultCertStoreFile = "myidentities.jks";
             final String defaultCertStorePassword = "password";
             String filename = "";
-            certmgr1 = new Certmgr();
-            certmgr1.addCertmgrEventListener(new CertmgrEvents(this));
+            certmgr1 = new CertMgr();
+            certmgr1.addCertMgrEventListener(new CertMgrEvents(this));
             String buffer; //user input
             // read a cert store file
             System.out.print("Please enter java key store (.jks) path [\""+defaultCertStoreFile+"\"]: ");
@@ -67,28 +67,28 @@ public class certmgr {
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
         return bf.readLine();
     }
-    public void certList(CertmgrCertListEvent args) {
+    public void certList(CertMgrCertListEvent args) {
         i++;
         System.out.println(i + ". " + args.certSubject);
     }
 }
-class CertmgrEvents implements CertmgrEventListener{
+class CertMgrEvents implements CertMgrEventListener{
 		certmgr instance;
-    public CertmgrEvents(certmgr instance){
+    public CertMgrEvents(certmgr instance){
         this.instance = instance;
     }
-    public void certChain(CertmgrCertChainEvent args) {
+    public void certChain(CertMgrCertChainEvent args) {
     }
-    public void certList(CertmgrCertListEvent args) {
+    public void certList(CertMgrCertListEvent args) {
         instance.certList(args);
     }
-    public void error(CertmgrErrorEvent args) {
+    public void error(CertMgrErrorEvent args) {
     }
-    public void keyList(CertmgrKeyListEvent args) {
+    public void keyList(CertMgrKeyListEvent args) {
     }
-    public void storeList(CertmgrStoreListEvent args) {
+    public void storeList(CertMgrStoreListEvent args) {
     }
-    public void log(CertmgrLogEvent arg0) {
+    public void log(CertMgrLogEvent arg0) {
 	}
 }
 
@@ -113,15 +113,13 @@ class ConsoleDemo {
     System.out.print(label + punctuation + " ");
     return input();
   }
-
-  static String prompt(String label, String punctuation, String defaultVal)
-  {
-	System.out.print(label + " [" + defaultVal + "] " + punctuation + " ");
-	String response = input();
-	if(response.equals(""))
-		return defaultVal;
-	else
-		return response;
+  static String prompt(String label, String punctuation, String defaultVal) {
+      System.out.print(label + " [" + defaultVal + "] " + punctuation + " ");
+      String response = input();
+      if (response.equals(""))
+        return defaultVal;
+      else
+        return response;
   }
 
   static char ask(String label) {

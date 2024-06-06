@@ -65,7 +65,7 @@ struct ContentView: View, FTPDelegate {
       Group
       {
         HStack{
-          Text("Filename:")
+          Text("FileName:")
           
           TextField("enter remote/local filename...", text: $filename)
             .autocapitalization(/*@START_MENU_TOKEN@*/.none/*@END_MENU_TOKEN@*/)

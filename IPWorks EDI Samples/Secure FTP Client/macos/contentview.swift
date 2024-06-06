@@ -65,7 +65,7 @@ struct ContentView: View, FTPDelegate {
       Group
       {
         HStack {
-          Text("Filename:")
+          Text("FileName:")
             .padding(.horizontal, 10)
           
           TextField("Enter remote/local filename to download/upload", text: $filename)
