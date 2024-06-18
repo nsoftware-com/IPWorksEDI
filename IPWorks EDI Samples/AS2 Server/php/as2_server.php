@@ -16,22 +16,31 @@ require_once('../include/ipworksedi_as2receiver.php');
 require_once('../include/ipworksedi_const.php');
 ?>
 <?php
+if (php_sapi_name() == "cli") {
+  echo "This AS2Receiver demo is designed to be used in a web interface. Host this file on your PHP web server and post to it using the as2_client.php console demo.\n\n";
+  echo "For quick testing, the PHP built-in web server is useful, which can be started using the following command from the demos directory:\n\n";
+  echo "php -S 0.0.0.0:8000\n\n";
+  echo "Once this is running, post to \"http://localhost:8000/as2_server.php\" from as2_client.php.\n";
+  return;
+}
+
+$sendBuffer = TRUE; ob_start();
+
 if (!function_exists('getallheaders'))
 {
-    function getallheaders()
+  function getallheaders()
+  {
+    $headers = array();
+    foreach ($_SERVER as $name => $value)
     {
-       $headers = array();
-       foreach ($_SERVER as $name => $value)
-       {
-           if (substr($name, 0, 5) == 'HTTP_')
-           {
-               $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
-           }
-       }
-       return $headers;
+      if (substr($name, 0, 5) == 'HTTP_')
+      {
+        $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
+      }
     }
+    return $headers;
+  }
 } 
-
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   // Since this demo needs to be able to send responses back, we'll make sure that the boilerplate HTML isn't sent.
@@ -45,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $as2 = new IPWorksEDI_AS2Receiver();
   // (This is commented out by default to prevent any errors which may occur if the user PHP runs as doesn't
   // have access to the default log directory, which is alongside this demo file.)
-  //$as2->setLogDirectory(__DIR__."/AS2 Logs/%date%/From %as2from%/%messageid%");
+  // $as2->setLogDirectory(__DIR__."/AS2 Logs/%date%/From %as2from%/%messageid%");
   $as2->doConfig("LogOptions=All");
 
   // Now assign the request headers and body to AS2Sender.
@@ -125,6 +134,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   ob_start();
 } else {
 ?>
+
+<html>
+<head>
+<title>IPWorks EDI - AS2Receiver Demo</title>
+</head>
+<body>
+<div>
+<h2>AS2 Server</h2>
+<p>A simple example of an AS2 server.</p>
+<hr/>
 <p>This demo shows how to use the <b>AS2Receiver</b> component to process and respond to incoming AS2 messages.</p>
-<p>To try this demo, please post to this page using the EDI Integrator PHP Edition <b>as2client</b> demo or other EDI client software.</p>
-<?php } ?>
+<p>To try this demo, please post to this page using the IPWorks EDI PHP Edition <b>as2client</b> demo or other EDI client software.</p>
+</div>
+</body>
+</html>
+
+<?php
+} 
+if ($sendBuffer) ob_end_flush(); else ob_end_clean();
+?>

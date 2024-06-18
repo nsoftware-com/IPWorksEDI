@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="as4server.cs" />
+    <Reference Include="nsoftware.IPWorksEDI">
+      <HintPath>..\..\lib\net6.0\nsoftware.IPWorksEDI.dll</HintPath>
+    </Reference>
+  </ItemGroup></Project>

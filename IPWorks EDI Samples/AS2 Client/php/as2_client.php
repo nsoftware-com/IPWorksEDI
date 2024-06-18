@@ -16,164 +16,131 @@ require_once('../include/ipworksedi_as2sender.php');
 require_once('../include/ipworksedi_certmgr.php');
 require_once('../include/ipworksedi_const.php');
 ?>
-<?php $method = $_SERVER["REQUEST_METHOD"]; ?>
-<style>
-table { width: 100% !important; }
-td { white-space: nowrap; }
-td input { width: 100%; }
-td:last-child { width: 100%; }
-</style>
-<div width="90%">
-  <form method=POST>
-    <h2>Request Options</h2>
-    <h3>General</h3>
-    <table>
-      <tr><td>AS2 From:</td><td><input type=text name=as2From value="<?php echo isset($_POST["as2From"]) ? $_POST["as2From"] : "AS2 Test Sending Organization" ?>"></td></tr>
-      <tr><td>AS2 To:</td><td><input type=text name=as2To value="<?php echo isset($_POST["as2To"]) ? $_POST["as2To"] : "AS2 Test Receiving Organization" ?>"></td></tr>
-      <tr><td>Receiver URL:</td><td><input type=text name=url value="<?php echo isset($_POST["url"]) ? $_POST["url"] : "http://localhost/ibephp16/as2server.php" ?>"></td></tr>
-      <tr><td>MDN To*:</td><td><input type=text name=mdnTo value="<?php echo isset($_POST["mdnTo"]) ? $_POST["mdnTo"] : "as2@nsoftware.com" ?>"></td></tr>
-    </table>
-    <small>*Note that the value given here generally doesn't matter. AS2 receivers generally just check to see if <i>something</i> is specified when determining whether to send an MDN back or not.</small>
-    <br/>
-    <br/>
-    <textarea name=ediData rows=10 style="width: 100%;">Paste EDI data here.</textarea>
-    <br/>
-    <br/>
-    <div style="display: inline-block; margin: .25em 0;">
-      <input type=checkbox name=sign <?php echo ($method != "POST" || isset($_POST["sign"])) ? "checked" : "" ?>>
-      <label for=sign>Signed</lable>
-      &nbsp;&nbsp;&nbsp;
-      <input type=checkbox name=encrypt <?php echo ($method != "POST" || isset($_POST["encrypt"])) ? "checked" : "" ?>>
-      <label for=encrypt>Encrypted</lable>
-      &nbsp;&nbsp;&nbsp;
-      <input type=checkbox name=compress <?php echo ($method != "POST" || isset($_POST["compress"])) ? "checked" : "" ?>>
-      <label for=compress>Compressed</lable>
-      &nbsp;&nbsp;&nbsp;
-      <input type=checkbox name=signMdn <?php echo ($method != "POST" || isset($_POST["signMdn"])) ? "checked" : "" ?>>
-      <label for=signMdn>Request Signed MDN</lable>
-    </div>
-    <input type=submit value="Send" style="width: 10em; float: right;">
-    <h3>Signing Options</h3>
-    <b>Signature Algorithm</b>
-    <br/>
-    <div style="display: inline-block; margin: .25em 0;">
-      <?php $defSigAlg = $method == "POST" ? $_POST["sigAlg"] : "sha-256" ?>
-      <input type=radio id=sigAlg1 name=sigAlg value="sha1" <?php echo $defSigAlg == "sha1" ? "checked" : "" ?>>
-      <label for=sigAlg1>SHA1</lable>
-      &nbsp;&nbsp;&nbsp;
-      <input type=radio id=sigAlg2 name=sigAlg value="md5" <?php echo $defSigAlg == "md5" ? "checked" : "" ?>>
-      <label for=sigAlg2>MD5</lable>
-      &nbsp;&nbsp;&nbsp;
-      <input type=radio id=sigAlg3 name=sigAlg value="sha-256" <?php echo $defSigAlg == "sha-256" ? "checked" : "" ?>>
-      <label for=sigAlg3>SHA-256</lable>
-      &nbsp;&nbsp;&nbsp;
-      <input type=radio id=sigAlg4 name=sigAlg value="sha-384" <?php echo $defSigAlg == "sha-384" ? "checked" : "" ?>>
-      <label for=sigAlg4>SHA-384</lable>
-      &nbsp;&nbsp;&nbsp;
-      <input type=radio id=sigAlg5 name=sigAlg value="sha-512" <?php echo $defSigAlg == "sha-512" ? "checked" : "" ?>>
-      <label for=sigAlg5>SHA-512</lable>
-      &nbsp;&nbsp;&nbsp;
-      <input type=radio id=sigAlg6 name=sigAlg value="sha-224" <?php echo $defSigAlg == "sha-224" ? "checked" : "" ?>>
-      <label for=sigAlg3>SHA-224</lable>
-    </div>
-    <br/>
-    <b>Sender's Private Key (used for signing)</b>
-    <table>
-      <tr><td>.pfx/.p12 Certificate File:</td><td><input type=text name=sCertFile value="<?php echo isset($_POST["sCertFile"]) ? $_POST["sCertFile"] : "./as2sender.pfx" ?>"></td></tr>
-      <tr><td>Password:</td><td><input type=text name=sCertPass value="<?php echo isset($_POST["sCertPass"]) ? $_POST["sCertPass"] : "test" ?>"></td></tr>
-      <tr><td>Subject:</td><td><input type=text name=sCertSub value="<?php echo isset($_POST["sCertSub"]) ? $_POST["sCertSub"] : "*" ?>"></td></tr>
-    </table>
-    <h3>Encryption Options</h3>
-    <b>Encryption Algorithm</b>
-    <br/>
-    <div style="display: inline-block; margin: .25em 0;">
-      <?php $defEncAlg = $method == "POST" ? $_POST["encAlg"] : "3des" ?>
-      <input type=radio id=encAlg1 name=encAlg value="3des" <?php echo $defEncAlg == "3des" ? "checked" : "" ?>>
-      <label for=encAlg1>3DES</lable>
-      &nbsp;&nbsp;&nbsp;
-      <input type=radio id=encAlg2 name=encAlg value="des" <?php echo $defEncAlg == "des" ? "checked" : "" ?>>
-      <label for=encAlg2>DES</lable>
-      &nbsp;&nbsp;&nbsp;
-      <input type=radio id=encAlg3 name=encAlg value="aescbc128" <?php echo $defEncAlg == "aescbc128" ? "checked" : "" ?>>
-      <label for=encAlg3>AESCBC128</lable>
-      &nbsp;&nbsp;&nbsp;
-      <input type=radio id=encAlg4 name=encAlg value="aescbc192" <?php echo $defEncAlg == "aescbc192" ? "checked" : "" ?>>
-      <label for=encAlg4>AESCBC192</lable>
-      &nbsp;&nbsp;&nbsp;
-      <input type=radio id=encAlg5 name=encAlg value="aescbc256" <?php echo $defEncAlg == "aescbc256" ? "checked" : "" ?>>
-      <label for=encAlg5>AESCBC256</lable>
-    </div>
-    <br/>
-    <b>Receiver's Public Key (used for encryption and verifying signed MDNs)</b>
-    <table>
-      <tr><td>.cer Certificate File:</td><td><input type=text name=eCertFile value="<?php echo isset($_POST["eCertFile"]) ? $_POST["eCertFile"] : "./as2receiver.cer" ?>"></td></tr>
-      <tr><td>Subject:</td><td><input type=text name=eCertSub value="<?php echo isset($_POST["eCertSub"]) ? $_POST["eCertSub"] : "*" ?>"></td></tr>
-    </table>
-  </form>
 <?php
-if ($method == "POST") {
-  // Create an AS2Sender instance and set up logging settings.
-  $as2 = new IPWorksEDI_AS2Sender();
-  // (This is commented out by default to prevent any errors which may occur if the user PHP runs as doesn't
-  // have access to the default log directory, which is alongside this demo file.)
-  //$as2->setLogDirectory(__DIR__."/AS2 Logs/%date%/To %as2to%/%messageid%");
-  $as2->doConfig("LogOptions=All");
-
-  // The ASP.NET Development Server does not support chunked encoding, so this demo disables chunked encoding.
-  // It can be enabled if you are not posting to the ASP.NET Development Server.
-  $as2->doConfig("UseChunkedEncoding=False");
-
-  // Populate the component's properties using the values from the POST.
-  $as2->setAS2From($_POST["as2From"]);
-  $as2->setAS2To($_POST["as2To"]);
-  $as2->setURL($_POST["url"]);
-  $as2->setMDNTo($_POST["mdnTo"]);
-  if (!isset($_POST["signMdn"])) $as2->setMDNOptions("");
-  $as2->setCompressionFormat(isset($_POST["compress"]) ? 1 : 0);
-  $as2->setEDIData($_POST["ediData"]);
-  if (isset($_POST["sign"])) {
-    $as2->setSignatureAlgorithm($_POST["sigAlg"]);
-    $as2->setSigningCertStoreType(2);
-    $as2->setSigningCertStore($_POST["sCertFile"]);
-    $as2->setSigningCertStorePassword($_POST["sCertPass"]);
-    $as2->setSigningCertSubject($_POST["sCertSub"]);
+class MyAS2Sender extends IPWorksEDI_AS2Sender{
+  function FireSSLServerAuthentication($param) {
+    $param['accept'] = true;
+    return $param;
   }
-  if (isset($_POST["encrypt"])) {
-    $as2->setEncryptionAlgorithm($_POST["encAlg"]);
-    $as2->setRecipientCertCount(1);
-    $as2->setRecipientCertStoreType(0, 6);
-    $as2->setRecipientCertStore(0, $_POST["eCertFile"]);
-    $as2->setRecipientCertSubject(0, $_POST["eCertSub"]);
-  } elseif (isset($_POST["signMdn"])) {
-    // We still need the receiver's public certificate if we want a signed MDN, even if we don't want to encrypt.
-    // We'll just set it to the ReceiptSignerCert* properties rather than the RecipientCert* properties.
-    $as2->setReceiptSignerCertStoreType(6);
-    $as2->setReceiptSignerCertStore($_POST["eCertFile"]);
-    $as2->setReceiptSignerCertSubject($_POST["eCertSub"]);
+}
+
+try {
+
+  if ($argc < 4) {
+    echo "Usage: php as2client.php -f AS2FromId -t AS2ToId -u ReceiverURL -d EDIData -s SignatureCert -p SigningPass -r RecipientCert -m MDNTo\n\n";
+    echo "  -f    The AS2 From ID to use.\n";
+    echo "  -t    The AS2 To ID to use.\n";
+    echo "  -u    The URL of the server that receives the data.\n";
+    echo "  -d    The EDI data to send.\n";
+    echo "  -s    The sender's private key to use for signing. [Optional] (specify if you want to sign the outgoing data)\n";
+    echo "  -p    The password for the sender's private key. [Optional] (password for the provided as2sender.pfx file is \"test\")\n";
+    echo "  -r    The recipient's certificate for encryption. [Optional] (specify if you want to encrypt the outgoing data)\n";
+    echo "  -m    Where to deliver the MDN (default: as2@nsoftware.com) [Optional] (specify if you want to receive an MDN)\n";
+    echo "\nExample: php as2client.php -f \"AS2 Test Sending Organization\" -t \"AS2 Test Receiving Organization\" -u \"http://localhost:1339/as2server.aspx\" "
+        . " -d \"Sample EDI Data\" -m \"as2@nsoftware.com\" -s \"as2sender.pfx\" -p \"test\" -r \"as2receiver.cer\"\n";
+    return;
   }
 
-  echo "    <hr/><hr/><hr/>";
+  $as2client = new MyAS2Sender();
+  $signingCert = "";
+  $signingCertPass = "";
+  $mdnRequested = false;
+
+  for ($i = 0; $i < $argc; $i++)
+  {
+    if (str_starts_with($argv[$i],"-")) {
+      if ($argv[$i] == "-f") { 
+        $as2client->setAS2From($argv[$i + 1]);
+      }
+      if ($argv[$i] == "-t") { 
+        $as2client->setAS2To($argv[$i + 1]);
+      }
+      if ($argv[$i] == "-u") { 
+        // Set your partner's URL (HTTP or HTTPS) and the data to be sent. Note that if you are posting
+        // to an HTTPS URL, you will likely need to set SSLAcceptServerCert.
+        $as2client->setURL($argv[$i + 1]);
+      }
+      if ($argv[$i] == "-d") {
+        $as2client->setEDIType("application/edi-x12");
+        $as2client->setEDIData($argv[$i + 1]);
+      }
+      if ($argv[$i] == "-s") { $signingCert = $argv[$i + 1]; }
+      if ($argv[$i] == "-p") { $signingCertPass = $argv[$i + 1]; }
+      if ($argv[$i] == "-r") {
+        // Similarly, setting the recipient's certificate will instruct the class to encrypt the message.
+        // If you want to set a certificate, but don't want to encrypt the message, you can set
+        // EncryptionAlgorithm to an empty string.
+        $as2client->setRecipientCertCount(1);
+        $as2client->setRecipientCertStoreType(0, 99); // auto
+        $as2client->setRecipientCertStore(0, $argv[$i + 1]);
+        $as2client->setRecipientCertSubject(0, "*");
+      }
+      if ($argv[$i] == "-m") {
+        $mdnRequested = true;
+        // The actual value you feed to MDNTo is irrelevant,
+        // Most servers just check to see if something is specified at all
+        $as2client->setMDNTo($argv[$i + 1]);
+
+        // For the purposes of this demo, we only support synchronous MDNs so we leave this blank
+        $as2client->setMDNOptions("");
+
+        // By default, the class will request that the receipt be delivered synchronously over the same
+        // HTTP connection. If you prefer to receive your receipt asynchronously, you should set
+        // MDNDeliveryOption, and provide additional processing for inbound asynchronous receipts.
+        // as2->setMDNDeliveryOption("https://localhost:59144/");
+       }
+    }
+  }
+
+  if ($signingCert != "") {
+    // Note that setting a signing certificate will instruct the class to sign the message.
+    // Leave these properties blank to send an unsigned message.
+    $as2client->setSigningCertStoreType(99);
+    $as2client->setSigningCertStore($signingCert);
+    $as2client->setSigningCertStorePassword($signingCertPass);
+    $as2client->setSigningCertSubject("*");
+  }
+
+  // Some servers do not support chunked encoding. The following setting can be used to disable chunked encoding.
+  // $as2client->doConfig("UseChunkedEncoding=false");
+
+  // If you set a log directory, the component will produce detailed log files
+  $as2client->setLogDirectory("logs");
+
+  echo "Sending data to " . $as2client->getURL() . "...\n";
+
   try {
-    // Now, send the AS2 message.
-    $as2->doPost();
-    // If the call to post returns without throwing an exception, then the component was able to post the data and
-    // verify the response. In particular, if you requested a synchronous MDN, it will automatically be validated, 
-    // and an exception will be thrown if there are any problems.
-    echo "    <h2>Transmission Successful! (Details Below)</h2>";
+    // If the call to post() returns without throwing an exception, then the class was able to post
+    // the data and verify the response. In particular, if you requested a synchronous MDN,
+    // it will automatically be validated, and an exception will be thrown if there are any problems.
+
+    // If you requested an asynchronous MDN, you will need to save the values of MessageId,
+    // OriginalContentMIC, and MDNOptions, so they can be looked up based on the MessageId.
+    // Then, when you process the asynchronous MDN, you will need to load these values into
+    // the class to verify the MDN.
+    $as2client->doPost();
+
+    echo "Success!\n";
+
+    if ($mdnRequested) {
+      echo "MDN Verified\n";
+      echo "======================================== MDN Headers ========================================\n";
+      echo $as2client->getMDNReceiptHeaders() . "\n";
+      echo "=============================================================================================\n";
+      echo "============================= MDN Message (Human-Readable Part) =============================\n";
+      echo $as2client->getMDNReceiptMessage() . "\n";
+      echo "=============================================================================================\n";
+      echo "====================================== Raw MDN Content ======================================\n";
+      echo $as2client->getMDNReceiptContent() . "\n";
+      echo "=============================================================================================\n";
+    } else {
+      echo "No MDN Requested\n";
+    }
   } catch (Exception $ex) {
-    echo "    <h2>Transmission Failed. (Details Below)</h2>";
-    echo "    <p>Error: ".$ex->getMessage()."</p>";
+    echo "Sending failed.\n";
+    echo "Reason: " . $ex->getMessage() . "\n";
   }
-?>
-  <h3>Headers</h3>
-  <pre><?php echo $as2->getMDNReceiptHeaders() ?></pre>
-  <h3>Human-Readable Message</h3>
-  <pre><?php echo $as2->getMDNReceiptMessage() ?></pre>
-  <h3>MDN Receipt</h3>
-  <pre><?php echo $as2->getMDNReceiptMDN() ?></pre>
-  <h3>Full Raw Response</h3>
-  <pre><?php echo $as2->getMDNReceiptContent() ?></pre>
-<?php
+} catch (Exception $ex) {
+  echo "Error: " . $ex->getMessage() . "\n";
 }
 ?>
-</div>
